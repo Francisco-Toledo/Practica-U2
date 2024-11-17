@@ -1,0 +1,29 @@
+package Modelos;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class AlumnoDAO {
+    private Connection connection;
+
+    public AlumnoDAO(Connection connection) {
+        this.connection = connection;
+    }
+
+    public void insertarAlumno(Alumno alumno) {
+
+        String insertarAlumnoSQL = "INSERT INTO alumnos (id, nombre, apellido, DNI, curso) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement insertStmt = connection.prepareStatement(insertarAlumnoSQL)) {
+            insertStmt.setInt(1, alumno.getId());
+            insertStmt.setString(2, alumno.getNombre());
+            insertStmt.setString(3, alumno.getApellido());
+            insertStmt.setString(4, alumno.getDNI());
+            insertStmt.setInt(5, alumno.getCurso());
+            insertStmt.executeUpdate();
+            System.out.println("Modelos.Alumno insertado: " + alumno.getNombre());
+        } catch (SQLException e) {
+            System.out.println("Error al insertar alumno: " + e.getMessage());
+        }
+    }
+}
